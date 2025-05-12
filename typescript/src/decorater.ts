@@ -24,4 +24,25 @@ class Greeter {
   }
 }
 
-let c = new Greeter('Hello, world!')
+// let c = new Greeter('Hello, world!')
+
+
+
+function log(target: any, key: string, descriptor: PropertyDescriptor) {
+  const original = descriptor.value;
+  descriptor.value = function (...args: any[]) {
+    console.log(`Calling ${key} with`, args);
+    return original.apply(this, args);
+  };
+}
+
+class MathService {
+  @log
+  add(a: number, b: number) {
+    return a + b;
+  }
+}
+
+const ms = new MathService();
+ms.add(1, 2); // Logs: Calling add with [1, 2]
+
